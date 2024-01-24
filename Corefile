@@ -1,4 +1,5 @@
 . {
-    whoami
+    cache
+    forward . /etc/resolv.conf
     log
 }

@@ -14,11 +14,11 @@ FROM --platform=${PLATFORM}/${ARCH} debian:bullseye-slim
 RUN apt -y update
 COPY --from=builder /usr/src/app/coredns /usr/local/bin/
 COPY etc/docker/server-entrypoint.sh .
-COPY Corefile .
+COPY Corefile /coredns/Corefile
 
 # Labels
 LABEL org.opencontainers.image.source=https://github.com/mutablelogic/go-coredns-nomad
 
 # Entrypoint when running the server
 ENTRYPOINT [ "/server-entrypoint.sh" ]
-CMD [ "/usr/local/bin/coredns", "-conf", "/Corefile" ]
+CMD [ "/usr/local/bin/coredns", "-conf", "/coredns/Corefile" ]
