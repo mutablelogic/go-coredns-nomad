@@ -1,5 +1,15 @@
-. {
-    cache
-    forward . /etc/resolv.conf
+nomad {
+    nomad {
+        address {$NOMAD_ADDR}
+        token {$NOMAD_TOKEN}
+        ttl {$NOMAD_TTL}
+    }
+    cache {$NOMAD_TTL}
+    errors
     log
+}
+
+. {
+    forward . /etc/resolv.conf
+    errors
 }
