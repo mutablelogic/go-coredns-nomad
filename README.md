@@ -26,6 +26,6 @@ docker run --name coredns --rm -p 1053:53 \
 When you want to test it using dig,
 
 ```sh
-dig +tcp -p 1053 @localhost google.com
+dig +tcp -p 1053 @localhost service.default.nomad
 ```
 
