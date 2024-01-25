@@ -1,0 +1,54 @@
+name: Build target image
+on:
+  workflow_call:
+    inputs:
+      registry:
+        description: 'Docker Registry'
+        required: true
+        type: string
+        default: 'ghcr.io'
+      image:
+        description: 'Image'
+        required: true
+        type: string
+      version:
+        description: 'Version'
+        required: true
+        type: string
+      platform:
+        description: 'Platform'
+        required: true
+        type: string
+      arch:
+        description: 'Architecture'
+        required: true
+        type: string
+jobs:
+  build:
+    name: Build
+    runs-on: ${{ inputs.platform == 'linux' && (inputs.arch == 'arm64' || inputs.arch == 'arm') && 'self-hosted' || 'ubuntu-latest' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set tags
+        id: tags
+        run: |
+          echo "image=${{ inputs.registry }}/${{ github.repository_owner }}/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.arch }}" >> $GITHUB_OUTPUT
+          echo "tag=${{ inputs.version }}" >> $GITHUB_OUTPUT
+      - name: Login
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ inputs.registry }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build
+        run: |
+          docker build \
+            --tag ${{ steps.tags.outputs.image }}:${{ steps.tags.outputs.tag }} \
+            --build-arg ARCH=${{ inputs.arch }} \
+            --build-arg PLATFORM=${{ inputs.platform }} \
+            --build-arg VERSION=${{ inputs.version }} \
+            --file etc/docker/Dockerfile .
+      - name: Push
+        run: |
+          docker push ${{ steps.tags.outputs.image }}:${{ steps.tags.outputs.tag }}
