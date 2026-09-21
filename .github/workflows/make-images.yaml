@@ -7,12 +7,16 @@ env:
   image: coredns-nomad
   version: v1.11.1
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build-images:
     strategy:
       matrix:
-        platform: [ linux ]
-        arch: [ arm64, amd64 ]
+        platform: [linux]
+        arch: [arm64, amd64]
     uses: mutablelogic/go-coredns-nomad/.github/workflows/build-image.yaml@main
     with:
       registry: ghcr.io
