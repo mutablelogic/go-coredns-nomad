@@ -2,6 +2,7 @@ ARG PLATFORM
 ARG ARCH
 ARG VERSION
 FROM --platform=${PLATFORM}/${ARCH} golang:1.21-bullseye AS builder
+ARG VERSION
 
 # Clone repository and version, link in the plugin and build
 WORKDIR /usr/src/app

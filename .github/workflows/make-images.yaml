@@ -7,13 +7,17 @@ env:
   image: coredns-nomad
   version: v1.11.1
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build-images:
     strategy:
       matrix:
-        platform: [ linux ]
-        arch: [ arm64, amd64 ]
-    uses: mutablelogic/go-coredns-nomad/.github/workflows/build-image.yaml@main
+        platform: [linux]
+        arch: [arm64, amd64]
+    uses: mutablelogic/go-coredns-nomad/.github/workflows/build-image.yaml@djt/0921/permfix
     with:
       registry: ghcr.io
       image: coredns-nomad
@@ -31,7 +35,7 @@ jobs:
           echo "manifest=${{ env.registry }}/${{ github.repository_owner }}/${{ env.image }}" >> $GITHUB_OUTPUT
           echo "tag=${{ env.version }}" >> $GITHUB_OUTPUT
       - name: Login
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ${{ env.registry}}
           username: ${{ github.repository_owner }}
