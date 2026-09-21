@@ -54,6 +54,8 @@ jobs:
           file: etc/docker/Dockerfile
           push: true
           tags: ${{ steps.tags.outputs.image }}:${{ steps.tags.outputs.tag }}
+          provenance: false
+          sbom: false
           build-args: |
             ARCH=${{ inputs.arch }}
             PLATFORM=${{ inputs.platform }}
