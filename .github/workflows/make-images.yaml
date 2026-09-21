@@ -35,7 +35,7 @@ jobs:
           echo "manifest=${{ env.registry }}/${{ github.repository_owner }}/${{ env.image }}" >> $GITHUB_OUTPUT
           echo "tag=${{ env.version }}" >> $GITHUB_OUTPUT
       - name: Login
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ${{ env.registry}}
           username: ${{ github.repository_owner }}
