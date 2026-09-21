@@ -17,7 +17,7 @@ jobs:
       matrix:
         platform: [linux]
         arch: [arm64, amd64]
-    uses: mutablelogic/go-coredns-nomad/.github/workflows/build-image.yaml@main
+    uses: ./.github/workflows/build-image.yaml
     with:
       registry: ghcr.io
       image: coredns-nomad
